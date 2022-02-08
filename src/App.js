@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Places from "./data";
+import "./index.css";
 
-function App() {
+const App = () => {
+  const [data, setData] = useState(Places);
+
+  const removeCity = (city) => {
+    let newPlacesArray = [...data];
+    let index = newPlacesArray.indexOf(city);
+    if (index > -1) {
+      newPlacesArray.splice(index, 1);
+      setData(newPlacesArray);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <article className="article">
+      <h1>{data.length > 0 ? 'Our Tours' : 'No Tours Left'}</h1>
+      {data.map((place) => {
+        return (
+          <article key={place.key} className="place">
+            <div>
+              <img className="img" src={place.img} alt={place.name}></img>
+              <h6 className="price">${place.price}</h6>
+              <h6 className="bestOf">
+                Best of {place.name} in {place.timeLength} Days Tour
+              </h6>
+              <p className="description">{place.description}</p>
+            </div>
+            <div>
+              <button className="btn" onClick={() => removeCity(place)}>
+                Not Interested
+              </button>
+            </div>
+          </article>
+        );
+      })}
+    </article>
   );
-}
+};
 
 export default App;
